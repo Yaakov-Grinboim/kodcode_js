@@ -1,0 +1,17 @@
+[
+  {
+    "customerId": "test_user",
+    "balance": 500,
+    "cart": [
+      {
+        "productId": 1,
+        "quantity": 2
+      },
+      {
+        "productId": 2,
+        "quantity": 1
+      }
+    ],
+    "createdAt": "2026-07-11T22:32:10.836Z"
+  }
+]
