@@ -1,0 +1,23 @@
+services:
+  mysql:
+    image: mysql:8
+    container_name: mysql-example
+    ports:
+      - "3307:3307"
+    entrypoint: 
+      MYSQL_ALLOW_EMPTY_PASSWORD: true
+    restart: always
+    volumes:
+      -mydb:/mysql/db
+  myapp:
+    build: .
+    container_name: my-app-exanple
+    depends_on:
+      - mysql
+    environment:
+      - DB_HOST: mysql
+      - DB_PORT: 3306
+      - DB_PASSWORD: 
+
+  volumes:
+    mydb

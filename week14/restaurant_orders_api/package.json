@@ -1,0 +1,12 @@
+{
+  "name": "restaurant-orders-api",
+  "version": "1.0.0",
+  "main": "main.js",
+  "type": "module",
+  "scripts": {
+    "start": "node main.js"
+  },
+  "dependencies": {
+    "express": "^5.2.1"
+  }
+}

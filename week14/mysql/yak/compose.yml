@@ -1,0 +1,17 @@
+services:
+  mysql:
+    container_name: mysql-extra-container
+    image: mysql:8.4
+    ports:
+      - "3309:3309"
+    environment:
+      - MYSQL_ALLOW_EMPTY_PASSWORD=true
+      - MYSQL_DATABASE=my_db
+    volumes:
+      - /comp/momo/data 
+  momo:
+    image: my-simple-app 
+    container_name: momo
+
+volumes:
+  comp:

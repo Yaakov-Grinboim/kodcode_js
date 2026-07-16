@@ -1,0 +1,13 @@
+from node:20-alpine
+
+workdir /my-app
+
+copy package*.json /my-app/
+
+run npm install
+
+copy . /my-app/
+
+expose  3000
+
+cmd ["node", "server.js"]

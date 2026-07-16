@@ -1,0 +1,19 @@
+{
+  "name": "mysql-js-learning",
+  "version": "1.0.0",
+  "description": "Learning MySQL with JavaScript (Node.js)",
+  "main": "01_connection.js",
+  "type": "commonjs",
+  "scripts": {
+    "connection": "node 01_connection.js",
+    "promise": "node 02_promise_connection.js",
+    "crud": "node 03_crud.js",
+    "prepared": "node 04_prepared_statements.js",
+    "pool": "node 05_connection_pool.js",
+    "transactions": "node 06_transactions.js"
+  },
+  "dependencies": {
+    "dotenv": "^16.4.5",
+    "mysql2": "^3.9.7"
+  }
+}

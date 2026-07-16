@@ -1,0 +1,12 @@
+{
+  "name": "server_express_middleware",
+  "version": "1.0.0",
+  "main": "exercises.js",
+  "type": "module",
+  "scripts": {
+    "start": "node --watch exercises.js"
+  },
+  "dependencies": {
+    "express": "^5.2.1"
+  }
+}
