@@ -1,45 +1,67 @@
-import { createUser, getAllUsers, getById, updateUser, deleteUser } from "./DAL/users.dal.js";
 
-async function runDemo() {
-  console.log("--- Starting MongoDB CRUD Demo ---");
+import { MongoClient } from "mongodb";
 
-  // 1. קבלת כל המשתמשים
-  console.log("\n1. Fetching all users:");
-  const users = await getAllUsers();
-  console.log(users);
+const client = new MongoClient("mongodb+srv://yaakovgrinboim_db_user:LR9xWtX1aZwyMmGW@cluster0.zu5ny2i.mongodb.net");
 
-  // 2. יצירת משתמש חדש
-  console.log("\n2. Creating new user:");
-  const newUser = await createUser({ username: "MosheTemp", id: 45 });
-  console.log("Created User:", newUser);
+try {
+  await client.connect();
+  console.log("DB connected.");
+} catch (e) {
+  console.log("Failed connect to DB", e);
+  process.exit(1);
+}
+export const db = client.db("momo");
+export default client;
 
-  if (newUser && newUser._id) {
-    const userId = newUser._id.toString();
 
-    // 3. עדכון המשתמש החדש
-    console.log("\n3. Updating user username:");
-    const updateResult = await updateUser(userId, { username: "MosheUpdated" });
-    console.log("Update Result:", updateResult);
 
-    // 4. שליפת המשתמש המעודכן לפי מזהה
-    console.log("\n4. Fetching updated user by ID:");
-    const updatedUser = await getById(userId);
-    console.log("Updated User:", updatedUser);
 
-    // 5. מחיקת המשתמש
-    console.log("\n5. Deleting user:");
-    const deleteResult = await deleteUser(userId);
-    console.log("Delete Result:", deleteResult);
+// users.dal.js file:
 
-    // 6. וידוא מחיקה
-    console.log("\n6. Fetching all users after deletion:");
-    const finalUsers = await getAllUsers();
-    console.log(finalUsers);
+import { db } from "../db/db.js";
+const COLLECTION = db.collection("users");
+import { ObjectId } from "mongodb";
+
+async function getAllUsers() {
+  try {
+    return await COLLECTION.find().toArray();
+  } catch (e) {
+    console.error(e);
   }
-
-  console.log("\n--- Demo Finished ---");
-  process.exit(0);
+}
+async function getById(_id) {
+  try {
+    return await COLLECTION.findOne({ _id: new ObjectId(_id) });
+  } catch (e) {
+    console.error(e);
+  }
 }
 
-// הרצת הדמו
-runDemo();
+async function createUser(user) {
+  try {
+    const res = await COLLECTION.insertOne(user);
+    user._id = res.insertedId;
+    return user;
+  } catch (e) {
+    console.error(e);
+  }
+}
+async function deleteUser(_id) {
+  try {
+    return await COLLECTION.deleteOne({ _id: new ObjectId(_id) });
+  } catch (e) {
+    console.error(e);
+  }
+}
+async function updateUser(_id, newData) {
+  try {
+    return await COLLECTION.updateOne(
+      { _id: new ObjectId(_id) },
+      {
+        $set: newData,
+      },
+    );
+  } catch (e) {
+    console.error(e);
+  }
+}

@@ -1,0 +1,17 @@
+{
+  "name": "tessting",
+  "version": "1.0.0",
+  "description": "",
+  "main": "calculator.js",
+  "scripts": {
+    "start": "node --watch calculator.js",
+    "test": "node --test"
+  },
+  "keywords": [],
+  "author": "",
+  "license": "ISC",
+  "type": "module",
+  "directories": {
+    "test": "test"
+  }
+}

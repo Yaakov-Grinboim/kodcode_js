@@ -1,0 +1,1086 @@
+<!DOCTYPE html>
+<html lang="he" dir="rtl">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>מדריך למידה ומעקב - שבוע 15</title>
+  <!-- גוגל פונטס - Rubik -->
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+  <link href="https://fonts.googleapis.com/css2?family=Rubik:ital,wght@0,300..900;1,300..900&display=swap" rel="stylesheet">
+  
+  <style>
+    :root {
+      --bg-dark: #0b0f19;
+      --bg-card: rgba(255, 255, 255, 0.03);
+      --bg-card-hover: rgba(255, 255, 255, 0.06);
+      --border-color: rgba(255, 255, 255, 0.08);
+      
+      --accent-cyan: #06b6d4;
+      --accent-purple: #8b5cf6;
+      --accent-emerald: #10b981;
+      --accent-amber: #f59e0b;
+      --accent-rose: #f43f5e;
+      
+      --text-main: #f3f4f6;
+      --text-muted: #9ca3af;
+      --text-bright: #ffffff;
+      
+      --glow-cyan: rgba(6, 182, 212, 0.15);
+      --glow-purple: rgba(139, 92, 246, 0.15);
+    }
+
+    * {
+      box-sizing: border-box;
+      margin: 0;
+      padding: 0;
+    }
+
+    body {
+      font-family: 'Rubik', sans-serif;
+      background-color: var(--bg-dark);
+      background-image: 
+        radial-gradient(at 0% 0%, rgba(139, 92, 246, 0.08) 0px, transparent 50%),
+        radial-gradient(at 100% 100%, rgba(6, 182, 212, 0.08) 0px, transparent 50%);
+      color: var(--text-main);
+      min-height: 100vh;
+      line-height: 1.6;
+      padding-bottom: 50px;
+    }
+
+    header {
+      background: rgba(11, 15, 25, 0.8);
+      backdrop-filter: blur(12px);
+      border-bottom: 1px solid var(--border-color);
+      position: sticky;
+      top: 0;
+      z-index: 100;
+      padding: 15px 40px;
+      display: flex;
+      justify-content: space-between;
+      align-items: center;
+    }
+
+    .logo-container {
+      display: flex;
+      align-items: center;
+      gap: 12px;
+    }
+
+    .logo-badge {
+      background: linear-gradient(135deg, var(--accent-purple), var(--accent-cyan));
+      width: 40px;
+      height: 40px;
+      border-radius: 10px;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      font-weight: 900;
+      font-size: 1.2rem;
+      color: white;
+      box-shadow: 0 0 15px rgba(6, 182, 212, 0.4);
+    }
+
+    h1 {
+      font-size: 1.5rem;
+      font-weight: 700;
+      background: linear-gradient(to left, var(--text-bright), var(--accent-cyan));
+      -webkit-background-clip: text;
+      -webkit-text-fill-color: transparent;
+    }
+
+    .nav-tabs {
+      display: flex;
+      gap: 10px;
+      background: rgba(255, 255, 255, 0.02);
+      border: 1px solid var(--border-color);
+      padding: 4px;
+      border-radius: 30px;
+    }
+
+    .tab-btn {
+      background: transparent;
+      border: none;
+      color: var(--text-muted);
+      padding: 8px 20px;
+      font-size: 0.95rem;
+      font-weight: 500;
+      border-radius: 20px;
+      cursor: pointer;
+      transition: all 0.3s cubic-bezier(0.4, 0, 0.2, 1);
+    }
+
+    .tab-btn:hover {
+      color: var(--text-main);
+    }
+
+    .tab-btn.active {
+      background: linear-gradient(135deg, var(--accent-purple), var(--accent-cyan));
+      color: var(--text-bright);
+      box-shadow: 0 4px 12px rgba(139, 92, 246, 0.2);
+    }
+
+    .container {
+      max-width: 1200px;
+      margin: 40px auto;
+      padding: 0 20px;
+    }
+
+    .tab-content {
+      display: none;
+      animation: fadeIn 0.4s ease-out forwards;
+    }
+
+    .tab-content.active {
+      display: block;
+    }
+
+    @keyframes fadeIn {
+      from { opacity: 0; transform: translateY(10px); }
+      to { opacity: 1; transform: translateY(0); }
+    }
+
+    /* כרטיסיות מצב פרויקט */
+    .project-grid {
+      display: grid;
+      grid-template-columns: repeat(auto-fit, minmax(350px, 1fr));
+      gap: 25px;
+      margin-bottom: 40px;
+    }
+
+    .card {
+      background: var(--bg-card);
+      border: 1px solid var(--border-color);
+      border-radius: 16px;
+      padding: 25px;
+      transition: all 0.3s ease;
+      position: relative;
+      overflow: hidden;
+    }
+
+    .card::before {
+      content: '';
+      position: absolute;
+      top: 0;
+      left: 0;
+      width: 4px;
+      height: 100%;
+    }
+
+    .card.supabase::before { background: var(--accent-emerald); }
+    .card.mongo::before { background: var(--accent-cyan); }
+    .card.exer::before { background: var(--accent-amber); }
+
+    .card:hover {
+      transform: translateY(-5px);
+      background: var(--bg-card-hover);
+      box-shadow: 0 10px 30px rgba(0, 0, 0, 0.3);
+    }
+
+    .card-header {
+      display: flex;
+      justify-content: space-between;
+      align-items: center;
+      margin-bottom: 20px;
+    }
+
+    .card-title {
+      font-size: 1.3rem;
+      font-weight: 600;
+      color: var(--text-bright);
+    }
+
+    .badge {
+      padding: 4px 10px;
+      font-size: 0.75rem;
+      font-weight: 600;
+      border-radius: 30px;
+      text-transform: uppercase;
+    }
+
+    .badge.done {
+      background: rgba(16, 185, 129, 0.1);
+      color: var(--accent-emerald);
+      border: 1px solid rgba(16, 185, 129, 0.2);
+    }
+
+    .badge.pending {
+      background: rgba(245, 158, 11, 0.1);
+      color: var(--accent-amber);
+      border: 1px solid rgba(245, 158, 11, 0.2);
+    }
+
+    .badge.error {
+      background: rgba(244, 63, 94, 0.1);
+      color: var(--accent-rose);
+      border: 1px solid rgba(244, 63, 94, 0.2);
+    }
+
+    .card-section-title {
+      font-size: 0.9rem;
+      color: var(--text-muted);
+      margin-top: 15px;
+      margin-bottom: 8px;
+      font-weight: bold;
+    }
+
+    .task-list {
+      list-style: none;
+    }
+
+    .task-item {
+      display: flex;
+      align-items: flex-start;
+      gap: 10px;
+      font-size: 0.92rem;
+      margin-bottom: 8px;
+    }
+
+    .task-icon {
+      font-size: 1rem;
+      margin-top: 2px;
+    }
+
+    .task-item.completed .task-icon { color: var(--accent-emerald); }
+    .task-item.completed span { text-decoration: line-through; color: var(--text-muted); }
+    .task-item.pending .task-icon { color: var(--accent-amber); }
+    .task-item.error .task-icon { color: var(--accent-rose); }
+
+    .file-link {
+      color: var(--accent-cyan);
+      text-decoration: none;
+      font-weight: 500;
+      transition: color 0.2s;
+    }
+
+    .file-link:hover {
+      color: var(--text-bright);
+      text-decoration: underline;
+    }
+
+    /* דפי חומרי למידה */
+    .theory-layout {
+      display: grid;
+      grid-template-columns: 280px 1fr;
+      gap: 40px;
+    }
+
+    .theory-sidebar {
+      position: sticky;
+      top: 100px;
+      height: fit-content;
+      background: var(--bg-card);
+      border: 1px solid var(--border-color);
+      border-radius: 12px;
+      padding: 20px;
+    }
+
+    .sidebar-menu {
+      list-style: none;
+      display: flex;
+      flex-direction: column;
+      gap: 8px;
+    }
+
+    .menu-item button {
+      width: 100%;
+      text-align: right;
+      background: transparent;
+      border: none;
+      color: var(--text-muted);
+      padding: 10px 12px;
+      font-size: 0.95rem;
+      font-weight: 500;
+      border-radius: 8px;
+      cursor: pointer;
+      transition: all 0.2s;
+    }
+
+    .menu-item button:hover, .menu-item button.active {
+      color: var(--accent-cyan);
+      background: rgba(6, 182, 212, 0.05);
+    }
+
+    .menu-item button.active {
+      font-weight: 600;
+      border-right: 3px solid var(--accent-cyan);
+      border-radius: 0 8px 8px 0;
+    }
+
+    .theory-content {
+      background: var(--bg-card);
+      border: 1px solid var(--border-color);
+      border-radius: 16px;
+      padding: 35px;
+    }
+
+    .theory-section {
+      display: none;
+    }
+
+    .theory-section.active {
+      display: block;
+      animation: fadeIn 0.3s ease-out;
+    }
+
+    .theory-section h2 {
+      color: var(--text-bright);
+      font-size: 1.6rem;
+      margin-bottom: 20px;
+      border-bottom: 2px solid var(--border-color);
+      padding-bottom: 10px;
+      display: flex;
+      align-items: center;
+      gap: 12px;
+    }
+
+    .theory-section h3 {
+      color: var(--text-bright);
+      font-size: 1.15rem;
+      margin-top: 25px;
+      margin-bottom: 12px;
+    }
+
+    .theory-section p {
+      margin-bottom: 15px;
+      color: var(--text-main);
+      font-size: 1rem;
+    }
+
+    /* השוואות וטבלאות */
+    .comparison-table {
+      width: 100%;
+      border-collapse: collapse;
+      margin: 20px 0;
+      font-size: 0.95rem;
+    }
+
+    .comparison-table th, .comparison-table td {
+      border: 1px solid var(--border-color);
+      padding: 12px 15px;
+      text-align: right;
+    }
+
+    .comparison-table th {
+      background: rgba(255, 255, 255, 0.03);
+      color: var(--text-bright);
+      font-weight: 600;
+    }
+
+    .comparison-table tr:hover {
+      background: rgba(255, 255, 255, 0.01);
+    }
+
+    /* תיבות הערה/אזהרה */
+    .alert-box {
+      border-radius: 8px;
+      padding: 15px;
+      margin: 20px 0;
+      display: flex;
+      gap: 12px;
+      font-size: 0.92rem;
+    }
+
+    .alert-box.info {
+      background: rgba(6, 182, 212, 0.08);
+      border-right: 4px solid var(--accent-cyan);
+      color: var(--text-bright);
+    }
+
+    .alert-box.warning {
+      background: rgba(245, 158, 11, 0.08);
+      border-right: 4px solid var(--accent-amber);
+      color: var(--text-bright);
+    }
+
+    .alert-box.danger {
+      background: rgba(244, 63, 94, 0.08);
+      border-right: 4px solid var(--accent-rose);
+      color: var(--text-bright);
+    }
+
+    /* קטעי קוד */
+    .code-container {
+      position: relative;
+      margin: 20px 0;
+      border-radius: 8px;
+      overflow: hidden;
+      border: 1px solid var(--border-color);
+    }
+
+    .code-header {
+      background: rgba(255, 255, 255, 0.02);
+      padding: 8px 16px;
+      display: flex;
+      justify-content: space-between;
+      align-items: center;
+      border-bottom: 1px solid var(--border-color);
+    }
+
+    .code-lang {
+      font-size: 0.75rem;
+      text-transform: uppercase;
+      letter-spacing: 1px;
+      color: var(--text-muted);
+    }
+
+    .copy-btn {
+      background: transparent;
+      border: 1px solid var(--border-color);
+      color: var(--text-muted);
+      font-size: 0.75rem;
+      padding: 4px 8px;
+      border-radius: 4px;
+      cursor: pointer;
+      transition: all 0.2s;
+    }
+
+    .copy-btn:hover {
+      color: var(--text-bright);
+      background: rgba(255, 255, 255, 0.05);
+    }
+
+    pre {
+      background: #060913;
+      padding: 16px;
+      overflow-x: auto;
+      font-family: 'Consolas', 'Courier New', Courier, monospace;
+      font-size: 0.9rem;
+      color: #92a1b9;
+      text-align: left;
+      direction: ltr;
+    }
+
+    .keyword { color: #f43f5e; }
+    .string { color: #10b981; }
+    .function { color: #8b5cf6; }
+    .comment { color: #4b5563; font-style: italic; }
+
+    /* חידון אינטראקטיבי */
+    .quiz-box {
+      background: rgba(139, 92, 246, 0.04);
+      border: 1px dashed var(--accent-purple);
+      border-radius: 12px;
+      padding: 20px;
+      margin-top: 30px;
+    }
+
+    .quiz-question {
+      font-weight: 600;
+      margin-bottom: 15px;
+      color: var(--text-bright);
+    }
+
+    .quiz-options {
+      display: flex;
+      flex-direction: column;
+      gap: 10px;
+    }
+
+    .quiz-option {
+      background: rgba(255, 255, 255, 0.02);
+      border: 1px solid var(--border-color);
+      padding: 12px;
+      border-radius: 8px;
+      cursor: pointer;
+      transition: all 0.2s;
+      text-align: right;
+    }
+
+    .quiz-option:hover {
+      background: rgba(255, 255, 255, 0.05);
+    }
+
+    .quiz-option.correct {
+      background: rgba(16, 185, 129, 0.15) !important;
+      border-color: var(--accent-emerald) !important;
+      color: var(--text-bright);
+    }
+
+    .quiz-option.wrong {
+      background: rgba(244, 63, 94, 0.15) !important;
+      border-color: var(--accent-rose) !important;
+      color: var(--text-bright);
+    }
+
+    /* התאמה למסכים קטנים */
+    @media (max-width: 900px) {
+      .theory-layout {
+        grid-template-columns: 1fr;
+      }
+      .theory-sidebar {
+        position: relative;
+        top: 0;
+        margin-bottom: 20px;
+      }
+      header {
+        flex-direction: column;
+        gap: 15px;
+        padding: 20px;
+      }
+    }
+  </style>
+</head>
+<body>
+
+  <!-- תפריט עליון קבוע -->
+  <header>
+    <div class="logo-container">
+      <div class="logo-badge">15</div>
+      <div>
+        <h1>שבוע 15 - סדר, מעקב ולמידה</h1>
+      </div>
+    </div>
+    
+    <div class="nav-tabs">
+      <button class="tab-btn active" onclick="switchTab('projects-tab', this)">מצב הפרויקטים שלי</button>
+      <button class="tab-btn" onclick="switchTab('theory-tab', this)">חומרי לימוד ותיאוריה</button>
+    </div>
+  </header>
+
+  <div class="container">
+    
+    <!-- ============================================== -->
+    <!-- טאב 1: מצב פרויקטים ומעקב מפורט                  -->
+    <!-- ============================================== -->
+    <div id="projects-tab" class="tab-content active">
+      <div class="project-grid">
+        
+        <!-- כרטיסייה: Supabase -->
+        <div class="card supabase">
+          <div class="card-header">
+            <span class="card-title">ניהול פוסטים - Supabase</span>
+            <span class="badge pending">בתהליך עבודה</span>
+          </div>
+          <p style="font-size: 0.92rem; color: var(--text-muted); margin-bottom: 15px;">
+            פרויקט לניהול מחברים (authors) ופוסטים (posts) ללא בניית שרת ובלי ORM, תוך שימוש ישיר ב-Supabase Client.
+          </p>
+          
+          <div class="card-section-title">קוד קיים ומבנה</div>
+          <ul class="task-list">
+            <li class="task-item completed">
+              <span class="task-icon">✔</span>
+              <span>חיבור בסיסי ב-<a href="file:///C:/Users/yaako/Desktop/study-kodcode/js-stading/week15/supabase/db.js" class="file-link">db.js</a>.</span>
+            </li>
+            <li class="task-item completed">
+              <span class="task-icon">✔</span>
+              <span>פונקציות <code>createAuthors</code> ו-<code>getAllAuthors</code> מוכנות.</span>
+            </li>
+            <li class="task-item completed">
+              <span class="task-icon">✔</span>
+              <span>קובץ <a href="file:///C:/Users/yaako/Desktop/study-kodcode/js-stading/week15/supabase/app.js" class="file-link">app.js</a> בודק הרצה מול בסיס הנתונים.</span>
+            </li>
+          </ul>
+
+          <div class="card-section-title">מה צריך לבצע כדי לסיים</div>
+          <ul class="task-list">
+            <li class="task-item pending">
+              <span class="task-icon">⌛</span>
+              <span>להוסיף עדכון ומחיקה ל-authors (בתוך <code>db.js</code>).</span>
+            </li>
+            <li class="task-item pending">
+              <span class="task-icon">⌛</span>
+              <span>ליצור טבלה נוספת ב-Supabase עבור פוסטים (<code>posts</code>) עם קשר למחבר.</span>
+            </li>
+            <li class="task-item pending">
+              <span class="task-icon">⌛</span>
+              <span>לכתוב פונקציות CRUD מלאות עבור פוסטים (יצירה, קריאה, עדכון, מחיקה).</span>
+            </li>
+            <li class="task-item pending">
+              <span class="task-icon">⌛</span>
+              <span>לבצע שאילתת שליפת פוסטים יחד עם פרטי המחבר שלהם (שימוש ב-Join).</span>
+            </li>
+          </ul>
+        </div>
+
+        <!-- כרטיסייה: MongoDB + Express -->
+        <div class="card mongo">
+          <div class="card-header">
+            <span class="card-title">תרגילי MongoDB - Docker</span>
+            <span class="badge pending">בתהליך עבודה</span>
+          </div>
+          <p style="font-size: 0.92rem; color: var(--text-muted); margin-bottom: 15px;">
+            הרצת MongoDB במכולה מקומית (Docker), הגדרת שרת Express וביצוע CRUD לניהול פוסטים של בלוג.
+          </p>
+          
+          <div class="card-section-title">קוד קיים ומבנה</div>
+          <ul class="task-list">
+            <li class="task-item completed">
+              <span class="task-icon">✔</span>
+              <span>תרגיל 1: הכנסת נתוני seed (3 פוסטים) מוכנה ב-<a href="file:///C:/Users/yaako/Desktop/study-kodcode/js-stading/week15/mongo_db/exercises/index.js" class="file-link">exercises/index.js</a>.</span>
+            </li>
+            <li class="task-item completed">
+              <span class="task-icon">✔</span>
+              <span>תרגיל 2: <code>GET /posts</code> עבור פוסטים מפורסמים מוכן.</span>
+            </li>
+            <li class="task-item completed">
+              <span class="task-icon">✔</span>
+              <span>תרגיל 3: <code>POST /posts</code> ליצירת פוסט עם תאריך אוטומטי מוכן.</span>
+            </li>
+            <li class="task-item completed">
+              <span class="task-icon">✔</span>
+              <span>שכבת ה-DAL הכללית מוכנה ב-<a href="file:///C:/Users/yaako/Desktop/study-kodcode/js-stading/week15/mongo_db/DAL/users.dal.js" class="file-link">users.dal.js</a> עבור ישות משתמשים.</span>
+            </li>
+          </ul>
+
+          <div class="card-section-title">מה צריך לבצע כדי לסיים</div>
+          <ul class="task-list">
+            <li class="task-item pending">
+              <span class="task-icon">⌛</span>
+              <span>תרגיל 4: להוסיף <code>GET /posts/:id</code> ו-<code>DELETE /posts/:id</code> (עבודה עם ObjectId).</span>
+            </li>
+            <li class="task-item pending">
+              <span class="task-icon">⌛</span>
+              <span>תרגיל 5: להוסיף <code>PUT /posts/:id</code> לעדכון שדות ספציפיים בעזרת <code>$set</code>.</span>
+            </li>
+            <li class="task-item pending">
+              <span class="task-icon">⌛</span>
+              <span>ניקוי קוד: ישנם קודים כפולים וטיוטות ב-<a href="file:///C:/Users/yaako/Desktop/study-kodcode/js-stading/week15/mongo_db/index.js" class="file-link">index.js</a> וב-<a href="file:///C:/Users/yaako/Desktop/study-kodcode/js-stading/week15/mongo_db/app.js" class="file-link">app.js</a> הראשיים.</span>
+            </li>
+          </ul>
+        </div>
+
+        <!-- כרטיסייה: טיוטת חנות מוצרים -->
+        <div class="card exer">
+          <div class="card-header">
+            <span class="card-title">ניהול מוצרים (exer)</span>
+            <span class="badge error">שגיאות תחביר</span>
+          </div>
+          <p style="font-size: 0.92rem; color: var(--text-muted); margin-bottom: 15px;">
+            שרת Express בסיסי וניתוב מוצרים (shop) אשר נועד להתחבר ל-MongoDB מקומי.
+          </p>
+          
+          <div class="card-section-title">קוד קיים ומבנה</div>
+          <ul class="task-list">
+            <li class="task-item completed">
+              <span class="task-icon">✔</span>
+              <span>בניית שרת Express ב-<a href="file:///C:/Users/yaako/Desktop/study-kodcode/js-stading/week15/exer/app.js" class="file-link">app.js</a>.</span>
+            </li>
+            <li class="task-item completed">
+              <span class="task-icon">✔</span>
+              <span>הגדרת Routes בסיסיים ב-<a href="file:///C:/Users/yaako/Desktop/study-kodcode/js-stading/week15/exer/route/productRouter.js" class="file-link">productRouter.js</a>.</span>
+            </li>
+          </ul>
+
+          <div class="card-section-title">מה צריך לבצע כדי לסיים</div>
+          <ul class="task-list">
+            <li class="task-item error">
+              <span class="task-icon">❌</span>
+              <span><b>תיקון שגיאה קריטית:</b> בקובץ <a href="file:///C:/Users/yaako/Desktop/study-kodcode/js-stading/week15/exer/db/mongodb.js" class="file-link">mongodb.js</a> יש שגיאה שמונעת הרצה (שימוש כפול בשם <code>MongoClient</code>, קוד שנמצא אחרי ה-return, וייצוא שנקטע).</span>
+            </li>
+            <li class="task-item pending">
+              <span class="task-icon">⌛</span>
+              <span>חיבור אמיתי של נתיבי המוצרים למסד הנתונים של MongoDB במקום החזרת מידע סטטי.</span>
+            </li>
+          </ul>
+        </div>
+        
+      </div>
+    </div>
+
+    <!-- ============================================== -->
+    <!-- טאב 2: חומרי לימוד ותיאוריה - קלאסרום              -->
+    <!-- ============================================== -->
+    <div id="theory-tab" class="tab-content">
+      <div class="theory-layout">
+        
+        <!-- סרגל צד לניווט מהיר -->
+        <aside class="theory-sidebar">
+          <ul class="sidebar-menu">
+            <li class="menu-item"><button class="active" onclick="switchTheorySection('db-types', this)">1. בסיסי נתונים SQL vs NoSQL</button></li>
+            <li class="menu-item"><button onclick="switchTheorySection('db-design', this)">2. עיצוב בסיסי נתונים</button></li>
+            <li class="menu-item"><button onclick="switchTheorySection('mongo-crud', this)">3. MongoDB Core & CRUD</button></li>
+            <li class="menu-item"><button onclick="switchTheorySection('mongo-operators', this)">4. אופרטורים במונגו</button></li>
+            <li class="menu-item"><button onclick="switchTheorySection('mongo-tools', this)">5. MongoDB Compass & Atlas</button></li>
+            <li class="menu-item"><button onclick="switchTheorySection('express-integration', this)">6. אינטגרציה עם Express</button></li>
+            <li class="menu-item"><button onclick="switchTheorySection('supabase-theory', this)">7. בסיס הנתונים Supabase</button></li>
+          </ul>
+        </aside>
+
+        <!-- תוכן חומרי הלימוד -->
+        <main class="theory-content">
+          
+          <!-- סעיף 1: SQL vs NoSQL -->
+          <section id="db-types" class="theory-section active">
+            <h2>בסיסי נתונים יחסיים (SQL) מול NoSQL</h2>
+            <p>
+              בבואנו לבנות אפליקציות ושרתים, בחירת מסד הנתונים הנכון היא החלטה ארכיטקטונית מכרעת. כיום קיימות שתי גישות מרכזיות לאחסון וניהול מידע:
+            </p>
+            
+            <table class="comparison-table">
+              <thead>
+                <tr>
+                  <th>מאפיין</th>
+                  <th>בסיס נתונים יחסי (SQL / Relational)</th>
+                  <th>NoSQL (מבוסס מסמכים - Document-oriented)</th>
+                </tr>
+              </thead>
+              <tbody>
+                <tr>
+                  <td><strong>מבנה הנתונים</strong></td>
+                  <td>טבלאות עם שורות ועמודות קבועות. סכמה נוקשה ומחייבת.</td>
+                  <td>מסמכים גמישים במבנה JSON (תחת המכסה כ-BSON). ללא סכמה קבועה.</td>
+                </tr>
+                <tr>
+                  <td><strong>ניהול קשרים</strong></td>
+                  <td>מפתח ראשי (PK) ומפתח זר (FK). שליפה מורכבת באמצעות <code>JOIN</code>.</td>
+                  <td>קינון (Embedding) או קישור בעזרת מזהי מסמכים (Referencing).</td>
+                </tr>
+                <tr>
+                  <td><strong>עקביות (Consistency)</strong></td>
+                  <td>עמידה מלאה בתקן <strong>ACID</strong> (עסקאות בטוחות, אטומיות ושלמות).</td>
+                  <td>עקביות בסופו של דבר (Eventual Consistency) לטובת ביצועים מהירים.</td>
+                </tr>
+                <tr>
+                  <td><strong>סקלביליות (Scaling)</strong></td>
+                  <td>ורטיקלית (שדרוג חומרת השרת: עוד זיכרון ו-CPU).</td>
+                  <td>הוריזונטלית (ביזור הנתונים בין שרתים רבים - Sharding).</td>
+                </tr>
+                <tr>
+                  <td><strong>דוגמאות</strong></td>
+                  <td>MySQL, PostgreSQL, SQLite.</td>
+                  <td>MongoDB, DynamoDB.</td>
+                </tr>
+              </tbody>
+            </table>
+
+            <div class="alert-box info">
+              <strong>💡 כלל אצבע לבחירה:</strong>
+              נבחר ב-SQL כאשר נדרש ניהול עסקאות מורכב שבו שלמות המידע קריטית (כגון מערכות בנקאות או רכישות באינטרנט). נבחר ב-NoSQL כאשר המבנה דינמי, נדרש פיתוח מהיר, או כאשר קצב הכתיבה לשרת גבוה מאוד.
+            </div>
+          </section>
+
+          <!-- סעיף 2: עיצוב בסיסי נתונים -->
+          <section id="db-design" class="theory-section">
+            <h2>עיצוב ומידול בסיסי נתונים (DB Design)</h2>
+            <p>
+              לפני שמתחילים לכתוב קוד, יש לתכנן את ישויות המידע באפליקציה בעזרת <strong>ERD</strong> (Entity-Relationship Diagram) המציג את הישויות (Entities), התכונות שלהן (Attributes), והקשרים ביניהן.
+            </p>
+            
+            <h3>סוגי קשרים נפוצים:</h3>
+            <ul>
+              <li><strong>קשר אחד-לאחד (1:1):</strong> למשל, <code>User</code> ופרופיל ייחודי <code>Profile</code>.</li>
+              <li><strong>קשר אחד-לרבים (1:N):</strong> למשל, מחבר (<code>Author</code>) ופוסטים (<code>Posts</code>) שהוא כתב. בקשר זה נשמור מפתח זר בצד של ה"רבים" (בטבלת הפוסטים נשמור את מזהה המחבר - <code>author_id</code>).</li>
+              <li><strong>קשר רבים-לרבים (M:N):</strong> למשל, סטודנטים (<code>Students</code>) וקורסים (<code>Courses</code>). בבסיסי נתונים יחסיים (SQL) קשר זה ממומש באמצעות **טבלת קישור** (Junction Table) המכילה את המפתחות של שתי הטבלאות.</li>
+            </ul>
+
+            <h3>נורמליזציה מול דה-נורמליזציה (NoSQL Design):</h3>
+            <p>
+              בבסיסי נתונים NoSQL, במקום לבצע פיצול טבלאות נוקשה (נורמליזציה) אנו בוחרים בין:
+            </p>
+            <ul>
+              <li><strong>קינון (Embedding):</strong> שמירת אובייקטים בתוך אובייקטים (למשל, שמירת רשימת תגובות בתוך מסמך הפוסט). יתרון: שליפה מהירה ביותר בבקשה אחת. חיסרון: מוגבל בגודל המסמך (16MB במונגו) ועלול לגרום לכפילות נתונים.</li>
+              <li><strong>קישור (Referencing):</strong> שמירת מזהה בלבד (מצביע למסמך אחר). יתרון: מונע כפילויות. חיסרון: דורש שליפות נוספות (Lookups) כדי לחבר את המידע.</li>
+            </ul>
+          </section>
+
+          <!-- סעיף 3: MongoDB Core & CRUD -->
+          <section id="mongo-crud" class="theory-section">
+            <h2>מושגי ליבה ופעולות CRUD ב-MongoDB</h2>
+            <p>
+              MongoDB הוא מסד נתונים NoSQL המוביל בעולם המבוסס מסמכים. הוא מאחסן נתונים בפורמט BSON (בינארי דמוי JSON).
+            </p>
+            
+            <h3>מינוחים בסיסיים:</h3>
+            <ul>
+              <li><strong>Document (מסמך):</strong> רשומת הנתונים הבסיסית (מקביל לשורה ב-SQL).</li>
+              <li><strong>Collection (אוסף):</strong> קבוצה של מסמכים (מקביל לטבלה ב-SQL).</li>
+              <li><strong>_id:</strong> מפתח ייחודי אוטומטי מסוג <code>ObjectId</code> המיוצר לכל מסמך כדי להבטיח את ייחודיותו.</li>
+              <li><strong>Index (אינדקס):</strong> מבנה נתונים מיוחד המאפשר האצה דרמטית של חיפושים באוסף.</li>
+            </ul>
+
+            <h3>שיטות CRUD בסיסיות (בשימוש הדרייבר של Node.js):</h3>
+            
+            <div class="code-container">
+              <div class="code-header">
+                <span class="code-lang">javascript</span>
+                <button class="copy-btn" onclick="copyCode(this)">העתק קוד</button>
+              </div>
+              <pre><code><span class="comment">// 1. יצירה (Create)</span>
+await <span class="keyword">db</span>.collection(<span class="string">'posts'</span>).insertOne({ title: <span class="string">'My Post'</span>, published: <span class="keyword">true</span> });
+await <span class="keyword">db</span>.collection(<span class="string">'posts'</span>).insertMany([ { title: <span class="string">'Post 2'</span> }, { title: <span class="string">'Post 3'</span> } ]);
+
+<span class="comment">// 2. קריאה (Read) - שימוש ב-toArray לקבלת מערך</span>
+const allPosts = await <span class="keyword">db</span>.collection(<span class="string">'posts'</span>).find({ published: <span class="keyword">true</span> }).toArray();
+
+<span class="comment">// 3. עדכון (Update) - חובה להשתמש באופרטור עדכון כמו $set</span>
+await <span class="keyword">db</span>.collection(<span class="string">'posts'</span>).updateOne(
+  { _id: new ObjectId(<span class="string">'...'</span>) }, 
+  { $set: { title: <span class="string">'New Title'</span> } }
+);
+
+<span class="comment">// 4. מחיקה (Delete)</span>
+await <span class="keyword">db</span>.collection(<span class="string">'posts'</span>).deleteOne({ _id: new ObjectId(<span class="string">'...'</span>) });</code></pre>
+            </div>
+          </section>
+
+          <!-- סעיף 4: אופרטורים במונגו -->
+          <section id="mongo-operators" class="theory-section">
+            <h2>אופרטורים של שאילתות ועדכונים ב-MongoDB</h2>
+            <p>
+              על מנת לבצע סינונים מורכבים ולעדכן נתונים בצורה יעילה מבלי להחליף את כל המסמך, MongoDB מספקת מגוון אופרטורים המתחילים בתו דולר (<code>$</code>).
+            </p>
+
+            <h3>אופרטורים להשוואה וסינון (Query Operators):</h3>
+            <ul>
+              <li><code>$gt</code> (גדול מ...) | <code>$gte</code> (גדול או שווה ל...)</li>
+              <li><code>$lt</code> (קטן מ...) | <code>$lte</code> (קטן או שווה ל...)</li>
+              <li><code>$ne</code> (לא שווה ל...)</li>
+              <li><code>$in</code> (מתאים לאחד הערכים במערך שסופק). דוגמה: <code>{ category: { $in: ['JS', 'Node'] } }</code></li>
+              <li><code>$exists</code> (בודק האם שדה מסוים קיים במסמך). דוגמה: <code>{ discount: { $exists: true } }</code></li>
+            </ul>
+
+            <h3>אופרטורים לוגיים:</h3>
+            <ul>
+              <li><code>$or</code> (מחזיר מסמך אם לפחות תנאי אחד מתקיים).</li>
+              <li><code>$and</code> (מחזיר מסמך רק אם כל התנאים מתקיימים. שימושי בעיקר להצלבת תנאים מורכבים על אותו השדה).</li>
+            </ul>
+
+            <h3>אופרטורים לעדכון (Update Operators):</h3>
+            <div class="alert-box warning">
+              <strong>⚠️ שים לב:</strong>
+              אם תבצע עדכון (Update) ללא אופרטורים, המסמך כולו יימחק ויוחלף באובייקט החדש ששלחת!
+            </div>
+            <ul>
+              <li><code>$set</code> - מעדכן או מוסיף שדות ספציפיים בלבד, מבלי לפגוע בשאר המסמך.</li>
+              <li><code>$inc</code> - מגדיל או מקטין ערך מספרי בצורה אטומית ובטוחה מפני בעיות סינכרון (concurrency). דוגמה: <code>{ $inc: { views: 1 } }</code></li>
+              <li><code>$push</code> - מוסיף איבר למערך קיים.</li>
+              <li><code>$pull</code> - מסיר איבר ממערך קיים.</li>
+            </ul>
+          </section>
+
+          <!-- סעיף 5: MongoDB Tools -->
+          <section id="mongo-tools" class="theory-section">
+            <h2>MongoDB Compass & Atlas</h2>
+            
+            <h3>1. MongoDB Atlas (ענן):</h3>
+            <p>
+              שירות בסיסי נתונים מנוהל בענן (DBaaS). הוא חוסך מאיתנו את הצורך להריץ ולנהל שרתים פיזית.
+            </p>
+            <p><strong>שלבי עבודה עיקריים עם Atlas:</strong></p>
+            <ol>
+              <li>יצירת חשבון ובניית קלאסטר (Cluster) חינמי (M0).</li>
+              <li>הגדרת <strong>Database Users</strong> (שם משתמש וסיסמה ייעודיים לגישה למסד הנתונים - נפרדים מפרטי הכניסה לאתר אטלס).</li>
+              <li>הגדרת <strong>Network Access</strong> (חסימת IP / Whitelisting). לצורך בדיקות מקומיות מאשרים לרוב גישה מכל העולם על ידי הוספת הכתובת <code>0.0.0.0/0</code>.</li>
+              <li>העתקת מחרוזת החיבור (Connection String) המתחילה ב-<code>mongodb+srv://</code> והצבתה בקובץ ה-<code>.env</code> של הפרויקט.</li>
+            </ol>
+
+            <h3>2. MongoDB Compass (ממשק גרפי):</h3>
+            <p>
+              כלי עזר ויזואלי המותקן על המחשב ומאפשר ניהול נוח של מסד הנתונים (מקומי או בענן) ללא כתיבת קוד.
+            </p>
+            <ul>
+              <li><strong>CRUD ויזואלי:</strong> יצירה, עריכה ומחיקת מסמכים בקליק.</li>
+              <li><strong>בניית שאילתות:</strong> כתיבת שאילתות סינון ומיון (Sort: <code>1</code> עבור סדר עולה, <code>-1</code> עבור יורד).</li>
+              <li><strong>Schema Analyzer:</strong> כלי המנתח את האוסף ומציג אילו סוגי נתונים קיימים בכל שדה ובאיזה אחוז מהמסמכים הם מופיעים.</li>
+              <li><strong>Aggregation Pipeline Builder:</strong> ממשק לבניית שלבי אגרגציה מורכבים (שלב אחרי שלב) וייצוא שלהם ישירות לקוד JavaScript מוכן.</li>
+            </ul>
+          </section>
+
+          <!-- סעיף 6: אינטגרציה עם Express -->
+          <section id="express-integration" class="theory-section">
+            <h2>תבנית שרת Express משולב MongoDB</h2>
+            <p>
+              לפניך תבנית מלאה ונכונה לחיבור ושימוש ב-MongoDB בתוך שרת Express, המבוססת על החומר שנלמד בכיתה:
+            </p>
+
+            <div class="code-container">
+              <div class="code-header">
+                <span class="code-lang">javascript</span>
+                <button class="copy-btn" onclick="copyCode(this)">העתק קוד</button>
+              </div>
+              <pre><code>import express from <span class="string">'express'</span>;
+import { MongoClient, ObjectId } from <span class="string">'mongodb'</span>;
+
+const app = express();
+app.use(express.json()); <span class="comment">// קריאת JSON ב-Body</span>
+
+const MONGO_URI = process.env.MONGODB_URI || <span class="string">'mongodb://localhost:27017'</span>;
+const client = new MongoClient(MONGO_URI);
+let db;
+
+<span class="comment">// חיבור חד פעמי בכניסה לשרת</span>
+async function connectDB() {
+  try {
+    await client.connect();
+    db = client.db(<span class="string">'blog_db'</span>);
+    console.log(<span class="string">'Connected to MongoDB successfully!'</span>);
+  } catch (error) {
+    console.error(<span class="string">'Failed to connect to database:'</span>, error);
+    process.exit(1);
+  }
+}
+
+<span class="comment">// 1. קריאת פוסטים</span>
+app.get(<span class="string">'/posts'</span>, async (req, res) => {
+  try {
+    const posts = await db.collection(<span class="string">'posts'</span>).find({ published: true }).toArray();
+    res.json(posts);
+  } catch (err) {
+    res.status(500).json({ error: err.message });
+  }
+});
+
+<span class="comment">// 2. יצירת פוסט</span>
+app.post(<span class="string">'/posts'</span>, async (req, res) => {
+  try {
+    const newPost = {
+      title: req.body.title,
+      content: req.body.content,
+      createdAt: new Date()
+    };
+    const result = await db.collection(<span class="string">'posts'</span>).insertOne(newPost);
+    res.status(201).json({ _id: result.insertedId, ...newPost });
+  } catch (err) {
+    res.status(500).json({ error: err.message });
+  }
+});
+
+<span class="comment">// 3. עדכון פוסט לפי מזהה</span>
+app.put(<span class="string">'/posts/:id'</span>, async (req, res) => {
+  try {
+    const id = req.params.id;
+    if (!ObjectId.isValid(id)) {
+      return res.status(400).json({ error: <span class="string">'Invalid ID format'</span> });
+    }
+    const updateResult = await db.collection(<span class="string">'posts'</span>).updateOne(
+      { _id: new ObjectId(id) },
+      { $set: req.body }
+    );
+    if (updateResult.matchedCount === 0) {
+      return res.status(404).json({ error: <span class="string">'Post not found'</span> });
+    }
+    res.json({ message: <span class="string">'Post updated successfully'</span> });
+  } catch (err) {
+    res.status(500).json({ error: err.message });
+  }
+});
+
+<span class="comment">// חיבור והפעלה</span>
+connectDB().then(() => {
+  app.listen(3000, () => console.log(<span class="string">'Server running on port 3000'</span>));
+});</code></pre>
+            </div>
+          </section>
+
+          <!-- סעיף 7: Supabase Backend-as-a-Service -->
+          <section id="supabase-theory" class="theory-section">
+            <h2>עבודה עם Supabase (Backend-as-a-Service)</h2>
+            <p>
+              Supabase הוא תחליף קוד פתוח ל-Firebase המספק שרת מוכן עם מסד נתונים מסוג PostgreSQL, מערכת הרשאות, אחסון קבצים, וכתובות API מובנות ומאובטחות ישירות לבסיס הנתונים.
+            </p>
+
+            <h3>מאפיינים מרכזיים:</h3>
+            <ul>
+              <li><strong>Row Level Security (RLS):</strong> מנגנון אבטחה המאפשר להגדיר ברמת מסד הנתונים בדיוק מי רשאי לקרוא, לכתוב או לעדכן כל שורה בטבלה. חוסך את הצורך בבניית קוד שרת מורכב לביצוע אימותים.</li>
+              <li><strong>חיבור פשוט ל-Client:</strong> עבודה קלה באמצעות ספריית JavaScript רשמית.</li>
+            </ul>
+
+            <h3>שאילתות קשרים (JOIN) ב-Supabase:</h3>
+            <p>
+              אחד היתרונות הגדולים של Supabase (בהיותו מבוסס SQL) הוא היכולת לבצע קשרי גומלין ו-Joins בצורה אינטואיטיבית ישירות מהקליינט:
+            </p>
+
+            <div class="code-container">
+              <div class="code-header">
+                <span class="code-lang">javascript</span>
+                <button class="copy-btn" onclick="copyCode(this)">העתק קוד</button>
+              </div>
+              <pre><code>import { createClient } from <span class="string">'@supabase/supabase-js'</span>;
+
+const supabase = createClient(process.env.SUPABASE_URL, process.env.API_KEY);
+
+<span class="comment">// שליפת כל הפוסטים יחד עם פרטי המחברים שלהם (Join)</span>
+const { data, error } = await supabase
+  .from(<span class="string">'posts'</span>)
+  .select(<span class="string">'id, title, content, authors(id, firstname, lastname)'</span>);
+
+if (error) {
+  console.error(<span class="string">'Error fetching posts:'</span>, error);
+} else {
+  console.log(<span class="string">'Posts with authors:'</span>, data);
+}</code></pre>
+            </div>
+
+            <!-- בוחן קטן להבנה -->
+            <div class="quiz-box">
+              <div class="quiz-question">📌 בוחן הבנה מהיר: בקשר בין פוסט (Post) למחבר (Author), היכן נשמור את המפתח הזר (Foreign Key)?</div>
+              <div class="quiz-options">
+                <button class="quiz-option" onclick="checkAnswer(this, false)">נשמור את מזהה הפוסט בתוך טבלת המחבר (Author).</button>
+                <button class="quiz-option" onclick="checkAnswer(this, true)">נשמור את מזהה המחבר (author_id) בתוך טבלת הפוסטים (Post).</button>
+                <button class="quiz-option" onclick="checkAnswer(this, false)">ניצור טבלה שלישית מיוחדת לקשר אחד-לרבים.</button>
+              </div>
+              <div id="quiz-feedback" style="margin-top: 10px; font-weight: bold;"></div>
+            </div>
+          </section>
+
+        </main>
+      </div>
+    </div>
+
+  </div>
+
+  <script>
+    // מעבר בין טאבים ראשיים
+    function switchTab(tabId, btn) {
+      document.querySelectorAll('.tab-content').forEach(tab => {
+        tab.classList.remove('active');
+      });
+      document.querySelectorAll('.tab-btn').forEach(b => {
+        b.classList.remove('active');
+      });
+      
+      document.getElementById(tabId).classList.add('active');
+      btn.classList.add('active');
+    }
+
+    // מעבר בין סעיפי התיאוריה
+    function switchTheorySection(sectionId, btn) {
+      document.querySelectorAll('.theory-section').forEach(section => {
+        section.classList.remove('active');
+      });
+      document.querySelectorAll('.sidebar-menu button').forEach(b => {
+        b.classList.remove('active');
+      });
+
+      document.getElementById(sectionId).classList.add('active');
+      btn.classList.add('active');
+    }
+
+    // פונקציית העתקת קוד
+    function copyCode(btn) {
+      const codeBlock = btn.parentElement.nextElementSibling.querySelector('code');
+      navigator.clipboard.writeText(codeBlock.innerText).then(() => {
+        const originalText = btn.innerText;
+        btn.innerText = 'הועתק!';
+        btn.style.color = '#10b981';
+        setTimeout(() => {
+          btn.innerText = originalText;
+          btn.style.color = '';
+        }, 2000);
+      });
+    }
+
+    // בדיקת תשובה בבוחן
+    function checkAnswer(btn, isCorrect) {
+      const options = btn.parentElement.querySelectorAll('.quiz-option');
+      options.forEach(opt => {
+        opt.disabled = true;
+        opt.classList.remove('correct', 'wrong');
+      });
+
+      const feedback = document.getElementById('quiz-feedback');
+
+      if (isCorrect) {
+        btn.classList.add('correct');
+        feedback.innerText = 'נכון מאוד! בקשר של אחד-לרבים, המפתח הזר נשמר תמיד בצד של ה"רבים" (כלומר, בפוסט שמקושר למחבר בודד).';
+        feedback.style.color = '#10b981';
+      } else {
+        btn.classList.add('wrong');
+        feedback.innerText = 'לא מדויק. נסה לחשוב: היכן נרצה להצביע על הקשר? פוסט בודד קשור למחבר בודד, ולכן הגיוני שנשמור בו את author_id.';
+        feedback.style.color = '#f43f5e';
+      }
+    }
+  </script>
+</body>
+</html>

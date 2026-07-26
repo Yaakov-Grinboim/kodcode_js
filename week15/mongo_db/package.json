@@ -4,13 +4,15 @@
   "description": "",
   "main": "app.js",
   "scripts": {
-    "start": "node --watch app.js"
+    "start": "node --env-file=atlas-credentials.env --watch app.js",
+    "exercise": "node --env-file=atlas-credentials.env --watch index.js"
   },
   "keywords": [],
   "author": "",
   "license": "ISC",
   "type": "module",
   "dependencies": {
+    "express": "^5.2.1",
     "mongo": "^0.1.0",
     "mongodb": "^7.5.0"
   }

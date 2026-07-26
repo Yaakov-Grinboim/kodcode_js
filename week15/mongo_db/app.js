@@ -1,18 +1,18 @@
 import { MongoClient } from "mongodb";
 
-const client = new MongoClient("mongodb://localhost:27017");
+const client = new MongoClient(process.env.MONGODB_URI || "mongodb://localhost:27017");
 
 try {
   await client.connect();
   const db = client.db("exemple");
   const collection = db.collection("users");
   const res = await collection.deleteOne(
-{ username: "Mmomooshe" }
-//   const res = await collection.updateOne(
-//     { username: "momo" },
-//     {
-//       $set: { username: "Mmomooshe" }
-//     },
+    { username: "Mmomooshe" },
+    //   const res = await collection.updateOne(
+    //     { username: "momo" },
+    //     {
+    //       $set: { username: "Mmomooshe" }
+    //     },
   );
   // .find({_id: new ObjectId('6a5ddd809c26c0fbe3315458') })
   // .toArray();

@@ -7,11 +7,12 @@ let db;
 
 export async function connectDB() {
   try {
-    await client.db("admin_dashboard");
+    await client.connect()
+    db = client.db("admin_dashboard");
     console.log("Connected to MongoDB successfully!");
     return db;
   } catch (e) {
-    console.error("Failed to connect to MongoDB:", error);
+    console.error("Failed to connect to MongoDB:", e);
     process.exit(1);
   }
 }
